@@ -1,7 +1,7 @@
 # Skrypt .bat korzystający z TCC
 
 Krótki skrypt wykrywający odpalającą go powłokę tekstową oraz korzystający z poleceń TCC.  
-[Treść zadania](../blob/master/%C4%86wiczenie_3_SO.pdf)
+[Treść zadania](Ćwiczenie_3_SO.pdf)
 
 ## Najważniejsze funkcje
 * Wbudowana pomoc
@@ -12,4 +12,4 @@ Krótki skrypt wykrywający odpalającą go powłokę tekstową oraz korzystają
 
 --------------------------
 
-Skrypt został napisany w celu realizacji laboratoriów 3 z Systemów Operacyjnych 
+Skrypt został napisany w celu realizacji 3 laboratoriów z Systemów Operacyjnych.
