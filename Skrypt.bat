@@ -18,6 +18,7 @@ goto :countAgruments
 
 if "%shellName%"=="cmd" goto :cmd
 if "%shellName%"=="TCC" goto :tcc
+if "%shellName%"=="PowerShell" echo PowerShell nie jest jeszcze obslugiwany WIP
 
 echo Niewspierana powloka. Skrypt jest przeznaczony do dzialania w TCC
 echo Niektore funkcje sa rowniez dostepne w CMD
@@ -72,7 +73,13 @@ if "%shellName%"=="cmd" (
     echo:
 )
 if "%shellName%"=="TCC" (
-    echo Wersja TCC
+    echo Wersja powloki:
+    ver
+    echo:
+)
+if "%shellName%"=="PowerShell" (
+    $PSVersionTable
+    echo:
 )
 Exit /B 0
 
@@ -93,7 +100,7 @@ goto :returnCountAgruments
 
 :cmd
 echo Wszystkie ciekawe funkcje dzialaja tylko w powloce TCC & echo:
-REM goto :displayHelp
+goto :displayHelp
 Exit /B %errorlevel%
 
 :tcc
