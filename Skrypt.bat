@@ -8,10 +8,13 @@ REM | z powloki TCC w skrypcie .bat  |
 REM ----------------------------------
 
 Title Skrypt na Systemy Operacyjne
+set fileName=Skrypt.bat
+set /A errorlevel=0
 
 call :displayTaksInfo
 call :displayShellInfo
-call :checkIfHelpWanted %~1
+goto :checkIfHelpWanted
+:returnCheckIfHelpWanted
 
 goto :countAgruments
 :returnCountAgruments
@@ -48,8 +51,9 @@ Exit /B 0
 echo POMOC
 echo ----------------------------------------------------- & echo:
 echo Uzycie:
-echo Skrypt.bat (- ^| /)(h ^| help ^| ?) - wyswietla pomoc
-echo Skrypt.bat -(crc ^| CRC) ciagZnakow - liczy sume kontrolna z podanego ciagu
+echo %fileName% (- ^| /)(h ^| help ^| ?) - wyswietla pomoc
+echo %fileName% -(crc ^| CRC) ciagZnakow - liczy sume kontrolna z podanego ciagu
+echo %fileName% -(crcf ^| CRCF) sciezkaDoPliku - liczy sume kontrolna z wskazanego pliku
 Exit /B %errorlevel%
 
 :displayShellInfo
@@ -84,21 +88,23 @@ if "%shellName%"=="PowerShell" (
 Exit /B 0
 
 :checkIfHelpWanted
-if "%~1"=="-h" goto displayHelp
-if "%~1"=="-help" goto displayHelp
-if "%~1"=="--help" goto displayHelp
-if "%~1"=="-?" goto displayHelp
-if "%~1"=="/?" goto displayHelp
-if "%~1"=="/h" goto displayHelp
-if "%~1"=="/help" goto displayHelp
-Exit /B 0
+if "%~1"=="-h" goto :displayHelp
+if "%~1"=="-help" goto :displayHelp
+if "%~1"=="--help" goto :displayHelp
+if "%~1"=="-?" goto :displayHelp
+if "%~1"=="/?" goto :displayHelp
+if "%~1"=="/h" goto :displayHelp
+if "%~1"=="/help" goto :displayHelp
+goto :returnCheckIfHelpWanted
 
+rem Ustawia zmienna numberOfArguments na liczbe argumentow skryptu
 :countAgruments
 set numberOfArguments=0
 for %%x in (%*) do Set /A numberOfArguments+=1
 goto :returnCountAgruments
 
 :cmd
+echo TODO:
 echo Wszystkie ciekawe funkcje dzialaja tylko w powloce TCC & echo:
 goto :displayHelp
 Exit /B %errorlevel%
@@ -106,6 +112,9 @@ Exit /B %errorlevel%
 :tcc
 if "%~1"=="-crc" goto :doCRC
 if "%~1"=="-CRC" goto :doCRC
+
+if "%~1"=="-crcf" goto :doCRCFromFile
+if "%~1"=="-CRCF" goto :doCRCFromFile
 
 echo Nieprawidlowe argumenty & echo:
 set /A errorlevel=1
@@ -123,4 +132,22 @@ if %numberOfArguments% NEQ 2 (
 
 echo Suma kontrolna dla %~2
 echo %@crc32[s, "%~2"]
+Exit /B %errorlevel%
+
+:doCRCFromFile
+if %numberOfArguments% NEQ 2 (
+    echo Nieprawidlowa liczba argumentow.
+    echo Spodziewana ilosc: 2 & echo:
+    set /A errorlevel=1
+    goto :displayHelp
+)
+
+rem Sprawdzenie czy funkcja dziala
+if %@crc32[f, "%~2"] EQU -1 (
+    echo Nie udalo sie odnalezc wskazanego pliku & echo:
+    goto :displayHelp
+)
+
+echo Suma kontrolna dla pliku %~2
+echo %@crc32[f, "%~2"]
 Exit /B %errorlevel%
