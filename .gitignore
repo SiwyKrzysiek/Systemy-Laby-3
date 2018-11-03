@@ -1,0 +1,6 @@
+# temporary files
+*~
+~*
+
+#vs code folder
+.vs/
