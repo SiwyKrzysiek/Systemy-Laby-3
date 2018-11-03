@@ -19,24 +19,14 @@ goto :checkIfHelpWanted
 goto :countAgruments
 :returnCountAgruments
 
-if "%shellName%"=="cmd" goto :cmd
 if "%shellName%"=="TCC" goto :tcc
+if "%shellName%"=="cmd" goto :cmd
 if "%shellName%"=="PowerShell" echo PowerShell nie jest jeszcze obslugiwany WIP
 
 echo Niewspierana powloka. Skrypt jest przeznaczony do dzialania w TCC
 echo Niektore funkcje sa rowniez dostepne w CMD
 
-REM goto :test
-:returnPointTest
-
-REM Pause
-rem Wyjdz ze skryptu
 Exit /B %errorlevel%
-
-:test
-REM echo %~2
-echo %@crc32["%comspec%"]
-goto returnPointTest
 
 :displayTaksInfo
 echo ---------------------------------
