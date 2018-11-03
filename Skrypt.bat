@@ -52,8 +52,9 @@ echo POMOC
 echo ----------------------------------------------------- & echo:
 echo Uzycie:
 echo %fileName% (- ^| /)(h ^| help ^| ?) - wyswietla pomoc
-echo %fileName% -(crc ^| CRC) ciagZnakow - liczy sume kontrolna z podanego ciagu
+echo %fileName% -(crc ^| CRC) ciagZnakow - liczy sume kontrolna CRC32 z podanego ciagu
 echo %fileName% -(crcf ^| CRCF) sciezkaDoPliku - liczy sume kontrolna z wskazanego pliku
+echo %fileName% -(sha ^| SHA) ciagZnakow - liczy sume kontrolna SHA256 z podanego ciagu
 Exit /B %errorlevel%
 
 :displayShellInfo
@@ -116,6 +117,9 @@ if "%~1"=="-CRC" goto :doCRC
 if "%~1"=="-crcf" goto :doCRCFromFile
 if "%~1"=="-CRCF" goto :doCRCFromFile
 
+if "%~1"=="-sha" goto :doSHA
+if "%~1"=="-SHA" goto :doSHA
+
 echo Nieprawidlowe argumenty & echo:
 set /A errorlevel=1
 goto :displayHelp
@@ -150,4 +154,16 @@ if %@crc32[f, "%~2"] EQU -1 (
 
 echo Suma kontrolna dla pliku %~2
 echo %@crc32[f, "%~2"]
+Exit /B %errorlevel%
+
+:doSHA
+if %numberOfArguments% NEQ 2 (
+    echo Nieprawidlowa liczba argumentow.
+    echo Spodziewana ilosc: 2 & echo:
+    set /A errorlevel=1
+    goto :displayHelp
+)
+
+echo Suma kontrolna dla %~2
+echo %@SHA256[s, "%~2"]
 Exit /B %errorlevel%
