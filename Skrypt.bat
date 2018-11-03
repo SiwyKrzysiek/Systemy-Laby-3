@@ -10,7 +10,7 @@ REM ----------------------------------
 Title Skrypt na Systemy Operacyjne
 
 call :displayTaksInfo
-call :displayShellName
+call :displayShellInfo
 call :checkIfHelpWanted %~1
 
 goto :countAgruments
@@ -51,7 +51,7 @@ echo Skrypt.bat (- ^| /)(h ^| help ^| ?) - wyswietla pomoc
 echo Skrypt.bat -(crc ^| CRC) ciagZnakow - liczy sume kontrolna z podanego ciagu
 Exit /B %errorlevel%
 
-:displayShellName
+:displayShellInfo
 rem Wydobycie nazwy powloki ze sciezki
 for %%n in (%COMSPEC%) DO (
     rem echo %%~nn
@@ -59,10 +59,21 @@ for %%n in (%COMSPEC%) DO (
 )
 
 echo Sykryp jest odpalony w powloce %shellName% & echo:
-echo WYPISAC WERSJE POWLOKI (VER)
+call :displayShellVersion
 echo Zawartosc zmiennej COMSPEC to:
 echo %COMSPEC%
 echo ----------------------------------------------------- & echo:
+Exit /B 0
+
+:displayShellVersion
+if "%shellName%"=="cmd" (
+    echo Wersja powloki:
+    ver
+    echo:
+)
+if "%shellName%"=="TCC" (
+    echo Wersja TCC
+)
 Exit /B 0
 
 :checkIfHelpWanted
