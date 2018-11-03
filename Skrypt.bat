@@ -53,8 +53,16 @@ echo ----------------------------------------------------- & echo:
 echo Uzycie:
 echo %fileName% (- ^| /)(h ^| help ^| ?) - wyswietla pomoc
 echo %fileName% -(crc ^| CRC) ciagZnakow - liczy sume kontrolna CRC32 z podanego ciagu
-echo %fileName% -(crcf ^| CRCF) sciezkaDoPliku - liczy sume kontrolna z wskazanego pliku
+echo %fileName% -(crcf ^| CRCF) sciezkaDoPliku - liczy sume kontrolna CRC32 z wskazanego pliku
 echo %fileName% -(sha ^| SHA) ciagZnakow - liczy sume kontrolna SHA256 z podanego ciagu
+echo %fileName% -(md5 ^| MD5) ciagZnakow - liczy sume kontrolna MD5 z podanego ciagu
+echo %fileName% -(md5f ^| MD5F) sciezkaDoPliku - liczy sume kontrolna MD5 z wskazanego pliku
+
+echo:
+echo Przyklady:
+echo Skrypt.bat -md5f "C:\windows\explorer.exe"
+echo Skrypt.bat -crc Ludwik
+echo Skrypt.bat -CRC "Ala ma kota."
 Exit /B %errorlevel%
 
 :displayShellInfo
@@ -120,6 +128,12 @@ if "%~1"=="-CRCF" goto :doCRCFromFile
 if "%~1"=="-sha" goto :doSHA
 if "%~1"=="-SHA" goto :doSHA
 
+if "%~1"=="-md5" goto :doMD5
+if "%~1"=="-MD5" goto :doMD5
+
+if "%~1"=="-md5f" goto :doMD5FromFile
+if "%~1"=="-MD5F" goto :doMD5FromFile
+
 echo Nieprawidlowe argumenty & echo:
 set /A errorlevel=1
 goto :displayHelp
@@ -166,4 +180,34 @@ if %numberOfArguments% NEQ 2 (
 
 echo Suma kontrolna dla %~2
 echo %@SHA256[s, "%~2"]
+Exit /B %errorlevel%
+
+:doMD5
+if %numberOfArguments% NEQ 2 (
+    echo Nieprawidlowa liczba argumentow.
+    echo Spodziewana ilosc: 2 & echo:
+    set /A errorlevel=1
+    goto :displayHelp
+)
+
+echo Suma kontrolna dla %~2
+echo %@MD5[s, "%~2"]
+Exit /B %errorlevel%
+
+:doMD5FromFile
+if %numberOfArguments% NEQ 2 (
+    echo Nieprawidlowa liczba argumentow.
+    echo Spodziewana ilosc: 2 & echo:
+    set /A errorlevel=1
+    goto :displayHelp
+)
+
+rem Sprawdzenie czy funkcja dziala
+if %@MD5[f, "%~2"] EQU -1 (
+    echo Nie udalo sie odnalezc wskazanego pliku & echo:
+    goto :displayHelp
+)
+
+echo Suma kontrolna dla pliku %~2
+echo %@MD5[f, "%~2"]
 Exit /B %errorlevel%
