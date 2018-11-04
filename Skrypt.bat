@@ -21,7 +21,6 @@ goto :countAgruments
 
 if "%shellName%"=="TCC" goto :tcc
 if "%shellName%"=="cmd" goto :cmd
-if "%shellName%"=="PowerShell" echo PowerShell nie jest jeszcze obslugiwany WIP
 
 echo Niewspierana powloka. Skrypt jest przeznaczony do dzialania w TCC
 echo Niektore funkcje sa rowniez dostepne w CMD
@@ -47,6 +46,8 @@ echo %fileName% -(crcf ^| CRCF) sciezkaDoPliku - liczy sume kontrolna CRC32 z ws
 echo %fileName% -(sha ^| SHA) ciagZnakow - liczy sume kontrolna SHA256 z podanego ciagu
 echo %fileName% -(md5 ^| MD5) ciagZnakow - liczy sume kontrolna MD5 z podanego ciagu
 echo %fileName% -(md5f ^| MD5F) sciezkaDoPliku - liczy sume kontrolna MD5 z wskazanego pliku
+
+echo %fileName% -(date ^| DATE) - wyswietla aktualna date
 
 echo:
 echo Przyklady:
@@ -84,6 +85,22 @@ if "%shellName%"=="PowerShell" (
     $PSVersionTable
     echo:
 )
+if "%shellName%"=="powershell" (
+    $PSVersionTable
+    echo:
+)
+if "%shellName%"=="POWERSHELL" (
+    $PSVersionTable
+    echo:
+)
+if "%shellName%"=="command" (
+    ver
+    echo:
+)
+if "%shellName%"=="COMMAND" (
+    ver
+    echo:
+)
 Exit /B 0
 
 :checkIfHelpWanted
@@ -103,9 +120,13 @@ for %%x in (%*) do Set /A numberOfArguments+=1
 goto :returnCountAgruments
 
 :cmd
-echo TODO:
-echo Wszystkie ciekawe funkcje dzialaja tylko w powloce TCC & echo:
+if "%~1"=="-date" goto :displayDate
+if "%~1"=="-DATE" goto :displayDate
+
+echo Nieprawidlowe argumenty & echo:
+set /A errorlevel=1
 goto :displayHelp
+
 Exit /B %errorlevel%
 
 :tcc
@@ -123,6 +144,9 @@ if "%~1"=="-MD5" goto :doMD5
 
 if "%~1"=="-md5f" goto :doMD5FromFile
 if "%~1"=="-MD5F" goto :doMD5FromFile
+
+if "%~1"=="-date" goto :displayDate
+if "%~1"=="-DATE" goto :displayDate
 
 echo Nieprawidlowe argumenty & echo:
 set /A errorlevel=1
@@ -200,4 +224,9 @@ if %@MD5[f, "%~2"] EQU -1 (
 
 echo Suma kontrolna dla pliku %~2
 echo %@MD5[f, "%~2"]
+Exit /B %errorlevel%
+
+:displayDate
+echo Dzisiejsza data to:
+date /T
 Exit /B %errorlevel%

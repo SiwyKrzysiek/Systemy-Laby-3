@@ -17,6 +17,7 @@ Krótki skrypt wykrywający odpalającą go powłokę tekstową oraz korzystają
 * Skrypt.bat -(sha ^| SHA) ciągZnaków - liczy sumę kontrolna SHA256 z podanego ciągu
 * Skrypt.bat -(md5 ^| MD5) ciągZnaków - liczy sumę kontrolna MD5 z podanego ciągu
 * Skrypt.bat -(md5f ^| MD5F) ścieżkaDoPliku - liczy sumę kontrolna MD5 z wskazanego pliku
+* Skrypt.bat -(date ^| DATE) - wyswietla aktualna date
 
 ## Przykłady użycia
 * Skrypt.bat -md5f "C:\windows\explorer.exe"
