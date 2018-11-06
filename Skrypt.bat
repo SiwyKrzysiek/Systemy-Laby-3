@@ -7,9 +7,9 @@ REM | Wykozystanie komendy %@crc32[] |
 REM | z powloki TCC w skrypcie .bat  |
 REM ----------------------------------
 
-Title Skrypt na Systemy Operacyjne
+REM Title Skrypt na Systemy Operacyjne
 set fileName=Skrypt.bat
-set /A errorlevel=0
+set errorlevel=0
 
 call :displayTaksInfo
 call :displayShellInfo
@@ -62,6 +62,8 @@ for %%n in (%COMSPEC%) DO (
     rem echo %%~nn
     set shellName=%%~nn
 )
+
+if "%@abs[-1]"=="-1" echo Wykrywam laboratoryjne TCC
 
 echo Sykryp jest odpalony w powloce %shellName% & echo:
 call :displayShellVersion
