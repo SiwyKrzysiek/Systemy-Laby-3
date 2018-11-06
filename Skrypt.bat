@@ -63,7 +63,17 @@ for %%n in (%COMSPEC%) DO (
     set shellName=%%~nn
 )
 
-if "%@abs[-1]"=="-1" echo Wykrywam laboratoryjne TCC
+rem Wykrycie TCC w inny sposob
+if "%@abs[-1]"=="1" (
+    set shellName=TCC
+)
+
+rem Jak nie jestem w TCC i cmd to muszę być w DOSIE
+if %shellName% NEQ TCC (
+    if %shellName% NEQ ^cmd (
+        set shellName=COMMAND
+    )
+)
 
 echo Sykryp jest odpalony w powloce %shellName% & echo:
 call :displayShellVersion
